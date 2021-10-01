@@ -5,8 +5,8 @@ import {
   MdRemoveCircleOutline,
 } from 'react-icons/md';
 
-// import { useCart } from '../../hooks/useCart';
-// import { formatPrice } from '../../util/format';
+import { useCart } from '../../hooks/useCart';
+import { formatPrice } from '../../util/format';
 import { Container, ProductTable, Total } from './styles';
 
 interface Product {
@@ -18,11 +18,12 @@ interface Product {
 }
 
 const Cart = (): JSX.Element => {
-  // const { cart, removeProduct, updateProductAmount } = useCart();
+  const { cart, removeProduct, updateProductAmount } = useCart();
 
-  // const cartFormatted = cart.map(product => ({
-  //   // TODO
-  // }))
+  const cartFormatted = cart.map(product => ({
+    
+    // TODO
+  }))
   // const total =
   //   formatPrice(
   //     cart.reduce((sumTotal, product) => {
@@ -31,15 +32,18 @@ const Cart = (): JSX.Element => {
   //   )
 
   function handleProductIncrement(product: Product) {
+    product.amount += 1 
     // TODO
   }
 
   function handleProductDecrement(product: Product) {
+    return product.amount -= 1
     // TODO
   }
 
   function handleRemoveProduct(productId: number) {
     // TODO
+    removeProduct(productId)
   }
 
   return (
@@ -77,7 +81,7 @@ const Cart = (): JSX.Element => {
                   type="text"
                   data-testid="product-amount"
                   readOnly
-                  value={2}
+                  value={3}
                 />
                 <button
                   type="button"
