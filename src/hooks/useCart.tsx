@@ -96,8 +96,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       
       if(storagedCart){
         console.log(storagedCart)
-        const upCartRaw = JSON.parse(storagedCart).filter((item: Product)=> {return item.id !== productId})
-        const updatedProductRaw = JSON.parse(storagedCart).filter((item: Product)=> item.id === productId)
+
+        const upCartRaw = cart.filter((item: Product)=> {return item.id !== productId})
+        const updatedProductRaw = cart.filter((item: Product)=> item.id === productId)
         const updatedProduct = {
             
           id: updatedProductRaw[0].id,
@@ -107,10 +108,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: amount
         
       }
-      setCart([updatedProduct, ...upCartRaw ])
+      setCart([updatedProduct, ...upCartRaw])
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+      
 
-        console.log(cart)
+        // console.log(cart)
       }
       
       // TODO
@@ -119,7 +121,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO
     }
   };
-  console.log(cart)
+  localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+  // console.log(cart)
   return (
     <CartContext.Provider
       value={{ cart, addProduct, removeProduct, updateProductAmount }}
