@@ -11,17 +11,14 @@ import { Product } from '../../types';
 const Header = (): JSX.Element => {
   const { cart } = useCart();
   
-  console.log(cart)
-  const cartSize = cart.reduce((unique: Product[], o)=>{
+  //tested
+    const cartSize = cart.reduce((unique: Product[], o)=>{
     if(!unique.some(obj => obj.id === o.id)){
       unique.push(o)
     }
     return unique
   }, []).length
-
-  console.log(cartSize)
-    
-  
+ 
   return (
     <Container>
       <Link to="/">
