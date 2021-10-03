@@ -107,7 +107,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: amount
         
       }
-      setCart([...upCartRaw, updatedProduct])
+      setCart([updatedProduct, ...upCartRaw ])
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
 
         console.log(cart)
