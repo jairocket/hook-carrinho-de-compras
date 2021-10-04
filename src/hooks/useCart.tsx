@@ -39,6 +39,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       if(data.amount === 0) toast.error('Quantidade solicitada fora de estoque')
       if (storagedCart) {
         const product = await api.get<Product>(`products/${productId}`)
+        if(!product) {
+          return
+        }
         let formProduct =  {
           id: product.data.id,
           title: product.data.title,
@@ -56,7 +59,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
             updateProductAmount(order)                       
         }else{
           
-          setCart([...cart, formProduct])
+          setCart([formProduct, ...cart ])
           localStorage.setItem('@RocketShoes:cart', JSON.stringify([...cart, formProduct]))
         }
       } 
@@ -91,12 +94,23 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       const {data} = await api.get<Stock>(`stock/${productId}`);
       console.log(data.amount)
       console.log(amount)
-      if(data.amount < amount) toast.error('Quantidade solicitada fora de estoque');
-      const storagedCart = localStorage.getItem('@RocketShoes:cart');
-      
-      if(storagedCart){
-        console.log(storagedCart)
+      if(data.amount < amount || amount < 1){
+        const upCartRaw = cart.filter((item: Product)=> {return item.id !== productId})
+        const updatedProductRaw = cart.filter((item: Product)=> item.id === productId)
+        const updatedProduct = {         
+          id: updatedProductRaw[0].id,
+          title: updatedProductRaw[0].title,
+          price: updatedProductRaw[0].price,
+          image: updatedProductRaw[0].image,
+          amount: updatedProductRaw[0].amount
+        }
+        setCart([updatedProduct, ...upCartRaw])
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
 
+
+        return toast.error('Quantidade solicitada fora de estoque')
+
+      }else{
         const upCartRaw = cart.filter((item: Product)=> {return item.id !== productId})
         const updatedProductRaw = cart.filter((item: Product)=> item.id === productId)
         const updatedProduct = {
@@ -110,8 +124,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
       setCart([updatedProduct, ...upCartRaw])
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
-      
 
+      };
+      const storagedCart = localStorage.getItem('@RocketShoes:cart');
+      
+      if(storagedCart){
+        console.log(storagedCart)
         // console.log(cart)
       }
       
