@@ -100,9 +100,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       if(amount === 0) return;
       const {data} = await api.get<Stock>(`stock/${productId}`);
       const product = await api.get<Product>(`products/${productId}`)
+      if(!product) return
+      if(data.amount < 1) return
       console.log(data.amount)
       console.log(amount)
-      if(data.amount < amount || amount < 1 || !product.data){
+      if(data.amount < amount || amount < 1 ){
         const upCartRaw = cart.filter((item: Product)=> {return item.id !== productId})
         const updatedProductRaw = cart.filter((item: Product)=> item.id === productId)
         const updatedProduct = {         
