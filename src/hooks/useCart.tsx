@@ -69,13 +69,17 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     }
   };
 
-  const removeProduct = (productId: number) => { //tested
+  const removeProduct = async (productId: number) => { //tested
     try {
       const storagedCart = localStorage.getItem('@RocketShoes:cart');
       if(storagedCart){
-        const updatedCart = JSON.parse(storagedCart).filter((item: Product) => item.id !== productId);
-        setCart([...updatedCart])
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
+        const product = await api.get(`products/${productId}`)
+        if(product){
+          const updatedCart = JSON.parse(storagedCart).filter((item: Product) => item.id !== productId);
+          setCart([...updatedCart])
+          localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
+        }
+        
         
       }
       // TODO
@@ -105,33 +109,28 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: updatedProductRaw[0].amount
         }
         setCart([updatedProduct, ...upCartRaw])
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify([updatedProduct, ...upCartRaw]))
 
 
         return toast.error('Quantidade solicitada fora de estoque')
 
+      }else if(!data){
+        return
       }else{
         const upCartRaw = cart.filter((item: Product)=> {return item.id !== productId})
         const updatedProductRaw = cart.filter((item: Product)=> item.id === productId)
         const updatedProduct = {
-            
           id: updatedProductRaw[0].id,
           title: updatedProductRaw[0].title,
           price: updatedProductRaw[0].price,
           image: updatedProductRaw[0].image,
           amount: amount
-        
       }
       setCart([updatedProduct, ...upCartRaw])
-      localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify([updatedProduct, ...upCartRaw]))
 
       };
-      const storagedCart = localStorage.getItem('@RocketShoes:cart');
       
-      if(storagedCart){
-        console.log(storagedCart)
-        // console.log(cart)
-      }
       
       // TODO
     } catch {

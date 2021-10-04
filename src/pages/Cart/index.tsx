@@ -30,7 +30,7 @@ const Cart = (): JSX.Element => {
     price: product.price
     // TODO
   }))
-  console.log(cartFormatted)
+
   const total =
     formatPrice(
       cart.reduce((sumTotal, product) => {
@@ -38,11 +38,9 @@ const Cart = (): JSX.Element => {
         // TODO
       }, 0)
     )
-console.log(total)
+
   function handleProductIncrement(product: Product) {
     const amount = product.amount + 1
-    !product.amount ?  product.amount = 1 :  product.amount += 1
-    console.log({productId: product.id, amount: product.amount})
     updateProductAmount({productId: product.id, amount})
 
     
