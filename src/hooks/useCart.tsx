@@ -34,13 +34,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const addProduct = async (productId: number) => { //tested
     try {
-      const storagedCart = localStorage.getItem('@RocketShoes:cart');
-      // const {data} = await api.get<Stock>(`stock/${productId}`)
-      // if(data.amount < 1) {
-      //   toast.error('Quantidade solicitada fora de estoque')
-      //   return
-      // } 
-      if (storagedCart) {
         const product = await api.get<Product>(`products/${productId}`)
         if(!product.data.id) {
           toast.error('Erro na adição do produto')
@@ -54,7 +47,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: 1
         }
         const repeated = cart.find((item: Product) => item.id === productId)
-        
         if(repeated){ 
           const stock = await api.get<Stock>(`stock/${productId}`)
                   
@@ -63,16 +55,10 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
             amount: repeated.amount > stock.data.amount ? stock.data.amount : repeated.amount + 1
           }
           updateProductAmount(order) 
-          return
-                               
+          return                      
         }
           setCart([formProduct, ...cart ])
-          localStorage.setItem('@RocketShoes:cart', JSON.stringify([formProduct, ...cart]))
-          console.log(formProduct)
-          console.log(cart)
-        
-        
-      } 
+          localStorage.setItem('@RocketShoes:cart', JSON.stringify([formProduct, ...cart])) 
     } catch {
       
       toast.error('Erro na adição do produto')
@@ -89,10 +75,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         }
 
         const updatedCart = cart.filter((item: Product) => item.id !== productId);
-        console.log(cart)
         setCart([...updatedCart])
-        console.log(cart)
-        console.log(updatedCart)
         localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
            
 

@@ -24,7 +24,6 @@ interface CartItemsAmount {
 const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const { addProduct, cart } = useCart();
-  console.log(cart)
 
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
     const key = product.id
@@ -60,8 +59,6 @@ const Home = (): JSX.Element => {
 
   function handleAddProduct(id: number) {
     addProduct(id)
-    console.log(cart)
-    //localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
     // tested
   }
   
