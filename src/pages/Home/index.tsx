@@ -60,9 +60,10 @@ const Home = (): JSX.Element => {
 
   function handleAddProduct(id: number) {
     addProduct(id)
+    localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
     // tested
   }
-  console.log(cartItemsAmount)
+  
   return (
     <ProductList>
       {products.map((product) =>{
