@@ -58,7 +58,7 @@ const Cart = (): JSX.Element => {
     // TODO
     removeProduct(productId)
   }
-console.log(cart)
+ 
   return (
     <Container>
       <ProductTable>
